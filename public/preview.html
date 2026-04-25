@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoteirAI Preview - Visualização da Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #fff 100%);
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .preview-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+            border-bottom: 3px solid #6366f1;
+            padding-bottom: 0.5rem;
+        }
+
+        .desktop-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            min-height: 600px;
+        }
+
+        .mobile-layout {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .style-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .style-btn:hover {
+            border-color: #6366f1;
+            background: #6366f1;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .style-emoji {
+            font-size: 1.75rem;
+        }
+
+        .style-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .style-desc {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        .info-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+            height: 100%;
+            color: #6b7280;
+        }
+
+        .empty-emoji {
+            font-size: 4rem;
+        }
+
+        .script-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        .result-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .meta-badge {
+            display: inline-flex;
+            padding: 0.375rem 0.875rem;
+            background: #6366f1;
+            color: white;
+            border-radius: 4px;
+            font-weight: 600;
+            width: fit-content;
+        }
+
+        .section-item {
+            background: white;
+            border-left: 4px solid #6366f1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .section-text {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-copy {
+            padding: 0.5rem 0.875rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #f9fafb;
+            color: #1f2937;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .btn-copy:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+
+        .device-label {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .desktop-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 RoteirAI - Visualização da Interface</h1>
+
+        <!-- Desktop Preview -->
+        <div class="preview-section">
+            <h2>💻 Desktop (1280x800)</h2>
+            <div class="desktop-layout">
+                <!-- Left Panel -->
+                <div class="panel">
+                    <h3>Crie seu Roteiro Viral</h3>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        Preencha os campos abaixo e deixe a IA gerar um script pronto para TikTok e Reels
+                    </p>
+
+                    <input type="text" class="form-input" placeholder="Ex: inteligência artificial, finanças pessoais...">
+                    <small style="color: #9ca3af; display: block; margin-bottom: 1rem;">Seja específico para resultados melhores</small>
+
+                    <p style="font-weight: 600; margin-bottom: 1rem;">Escolha o estilo do roteiro:</p>
+                    <div class="style-grid">
+                        <button class="style-btn">
+                            <span class="style-emoji">🔍</span>
+                            <span class="style-name">Curiosidade</span>
+                            <span class="style-desc">Revelações e descobertas</span>
+                        </button>
+                        <button class="style-btn">
+                            <span class="style-emoji">📖</span>
+                            <span class="style-name">Storytelling</span>
+                            <span class="style-desc">Histórias que emocionam</span>
+                        </button>
+                        <button class="style-btn">
+                            <span class="style-emoji">⚡</span>
+                            <span class="style-name">Polêmico</span>
+                            <span class="style-desc">Verdades incômodas</span>
+                        </button>
+                        <button class="style-btn">
+                            <span class="style-emoji">🚀</span>
+                            <span class="style-name">Motivacional</span>
+                            <span class="style-desc">Inspiração e ação</span>
+                        </button>
+                    </div>
+
+                    <button class="btn-primary">Gerar Roteiro</button>
+
+                    <div class="info-box">
+                        <p class="info-title">💡 Dica</p>
+                        <p class="info-text">Cada geração cria um roteiro único! Clique várias vezes para explorar diferentes abordagens.</p>
+                    </div>
+                </div>
+
+                <!-- Right Panel -->
+                <div class="panel">
+                    <div class="empty-state">
+                        <div class="empty-emoji">🎬</div>
+                        <p>Seu roteiro aparecerá aqui</p>
+                        <p style="font-size: 0.9rem; color: #9ca3af;">Preencha o formulário e clique em "Gerar Roteiro"</p>
+                    </div>
+                </div>
+            </div>
+            <p class="device-label">⬆️ Desktop / Tablet Layout</p>
+        </div>
+
+        <!-- Mobile Preview -->
+        <div class="preview-section">
+            <h2>📱 Mobile (390x844)</h2>
+            <div class="mobile-layout">
+                <div class="panel">
+                    <h3>Crie seu Roteiro Viral</h3>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                        Preencha os campos abaixo e deixe a IA gerar um script
+                    </p>
+
+                    <input type="text" class="form-input" placeholder="Ex: inteligência artificial...">
+                    <small style="color: #9ca3af; display: block; margin-bottom: 1rem;">Seja específico</small>
+
+                    <p style="font-weight: 600; margin-bottom: 1rem; font-size: 0.95rem;">Escolha o estilo:</p>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <button class="style-btn" style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 1rem;">
+                            <span class="style-emoji">🔍</span>
+                            <div style="text-align: left;">
+                                <div class="style-name">Curiosidade</div>
+                                <div class="style-desc">Revelações</div>
+                            </div>
+                        </button>
+                        <button class="style-btn" style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 1rem;">
+                            <span class="style-emoji">📖</span>
+                            <div style="text-align: left;">
+                                <div class="style-name">Storytelling</div>
+                                <div class="style-desc">Histórias</div>
+                            </div>
+                        </button>
+                        <button class="style-btn" style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 1rem;">
+                            <span class="style-emoji">⚡</span>
+                            <div style="text-align: left;">
+                                <div class="style-name">Polêmico</div>
+                                <div class="style-desc">Verdades</div>
+                            </div>
+                        </button>
+                        <button class="style-btn" style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 1rem;">
+                            <span class="style-emoji">🚀</span>
+                            <div style="text-align: left;">
+                                <div class="style-name">Motivacional</div>
+                                <div class="style-desc">Inspiração</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <button class="btn-primary">Gerar Roteiro</button>
+
+                    <div class="info-box">
+                        <p class="info-title">💡 Dica</p>
+                        <p class="info-text">Cada geração é única!</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: #f0f4ff; border-radius: 12px;">
+                    <p style="font-weight: 600; margin-bottom: 1rem;">📝 Após Gerar Roteiro:</p>
+                    <div class="script-box">Descobri algo que você NÃO sabia sobre...</div>
+                    <button class="btn-copy" style="width: 100%; margin-bottom: 0.5rem;">📋 Copiar Script</button>
+                    <div class="section-item">
+                        <div class="section-title">🎣 Gancho (0-2s)</div>
+                        <div class="section-text">"Descobri algo..."</div>
+                        <button class="btn-copy">Copiar</button>
+                    </div>
+                    <div class="section-item">
+                        <div class="section-title">📖 Contexto (2-8s)</div>
+                        <div class="section-text">"Há pouco tempo..."</div>
+                        <button class="btn-copy">Copiar</button>
+                    </div>
+                    <p style="text-align: center; color: #9ca3af; font-size: 0.85rem; margin-top: 1rem;">... mais 4 seções</p>
+                    <button class="btn-primary" style="margin-top: 1rem;">Gerar Novo Roteiro</button>
+                </div>
+            </div>
+            <p class="device-label">⬆️ Mobile Layout (Stack Vertical)</p>
+        </div>
+
+        <!-- Features -->
+        <div class="preview-section">
+            <h2>✨ Funcionalidades</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-emoji">🎨</div>
+                    <div class="feature-title">Design Moderno</div>
+                    <div class="feature-desc">Interface limpa com gradientes e cores vibrantes</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-emoji">📱</div>
+                    <div class="feature-title">Responsivo</div>
+                    <div class="feature-desc">Funciona perfeitamente em desktop e mobile</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-emoji">⚡</div>
+                    <div class="feature-title">Rápido</div>
+                    <div class="feature-desc">Carregamento < 1s, geração < 2s</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-emoji">📋</div>
+                    <div class="feature-title">Copiar Fácil</div>
+                    <div class="feature-desc">Copie script completo ou por seções</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-emoji">💾</div>
+                    <div class="feature-title">Download</div>
+                    <div class="feature-desc">Baixe roteiros em arquivo TXT</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-emoji">🤖</div>
+                    <div class="feature-title">IA Inteligente</div>
+                    <div class="feature-desc">4 estilos diferentes e roteiros únicos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="preview-section">
+            <h2>🎨 Paleta de Cores</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                <div style="text-align: center;">
+                    <div style="width: 100%; height: 60px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <div style="font-weight: 600;">Primário</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">#6366f1 → #4f46e5</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 100%; height: 60px; background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <div style="font-weight: 600;">Fundo</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">#f9fafb</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 100%; height: 60px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <div style="font-weight: 600;">Branco</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">#ffffff</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="width: 100%; height: 60px; background: #1f2937; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                    <div style="font-weight: 600; color: #fff;">Texto</div>
+                    <div style="font-size: 0.85rem; color: #6b7280;">#1f2937</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="preview-section" style="text-align: center; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px dashed #6366f1;">
+            <h2 style="border: none; padding: 0;">🚀 Pronto para Testar?</h2>
+            <p style="font-size: 1.1rem; color: #6b7280; margin-bottom: 1.5rem;">Seu SaaS está 100% funcional e pronto para usar!</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <button class="btn-primary" style="margin: 0;">Testar Localmente</button>
+                <button class="btn-primary" style="margin: 0;">Deploy no Railway</button>
+                <button class="btn-primary" style="margin: 0;">Ver Documentação</button>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #9ca3af;">Acesse: <strong>http://localhost:3000</strong> ou seu Railway URL</p>
+        </div>
+    </div>
+</body>
+</html>

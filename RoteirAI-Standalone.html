@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoteirAI - Gerador de Scripts Virais</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --success: #10b981;
+
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+
+            --border: #e5e7eb;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #f0f4ff 0%, #fff 100%);
+            line-height: 1.6;
+        }
+
+        .container-main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.75rem;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .panel {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .input {
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .estilo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .estilo-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .estilo-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .estilo-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .estilo-emoji {
+            font-size: 1.75rem;
+        }
+
+        .estilo-nome {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .estilo-desc {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .btn-primary {
+            padding: 1rem;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-copy {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-copy:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-copy-small {
+            padding: 0.5rem 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .btn-copy-small:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        .info-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .resultado-vazio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .empty-emoji {
+            font-size: 4rem;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+        }
+
+        .empty-desc {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .resultado-conteudo {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .resultado-header {
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .resultado-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.875rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            width: fit-content;
+        }
+
+        .secao-script {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .secao-titulo {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .script-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .secoes-breakdown {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+        }
+
+        .secao-item {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .secao-item-titulo {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .secao-item-texto {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .resultado-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .resultado-actions button {
+            flex: 1;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .notificacao {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .notificacao-erro {
+            background: #fee;
+            color: #c00;
+            border: 1px solid #fcc;
+        }
+
+        .notificacao-sucesso {
+            background: #efe;
+            color: #060;
+            border: 1px solid #cfc;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .estilo-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                gap: 1rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .estilo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .estilo-btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 1rem;
+                padding: 1rem;
+                text-align: left;
+            }
+
+            .estilo-emoji {
+                font-size: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .resultado-meta {
+                flex-direction: column;
+            }
+
+            .resultado-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-main">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">RoteirAI</span>
+            </div>
+            <p class="tagline">Roteiros Virais em Segundos</p>
+        </header>
+
+        <main>
+            <div class="container">
+                <!-- Left Panel - Formulário -->
+                <div class="panel">
+                    <h1 class="title">Crie seu Roteiro Viral</h1>
+                    <p class="subtitle">Preencha os campos abaixo e deixe a IA gerar um script pronto para TikTok e Reels</p>
+
+                    <form id="formularioRoteiro" class="form">
+                        <div class="form-group">
+                            <label for="tema" class="label">Qual é o tema do seu vídeo?</label>
+                            <input
+                                type="text"
+                                id="tema"
+                                placeholder="Ex: inteligência artificial, finanças pessoais, beleza..."
+                                class="input"
+                                maxlength="100"
+                                required
+                            >
+                            <span class="form-hint">Seja específico para resultados melhores</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="estilo" class="label">Escolha o estilo do roteiro</label>
+                            <div class="estilo-grid">
+                                <button type="button" class="estilo-btn" data-estilo="curiosidade">
+                                    <span class="estilo-emoji">🔍</span>
+                                    <span class="estilo-nome">Curiosidade</span>
+                                    <span class="estilo-desc">Revelações e descobertas</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="storytelling">
+                                    <span class="estilo-emoji">📖</span>
+                                    <span class="estilo-nome">Storytelling</span>
+                                    <span class="estilo-desc">Histórias que emocionam</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="polemico">
+                                    <span class="estilo-emoji">⚡</span>
+                                    <span class="estilo-nome">Polêmico</span>
+                                    <span class="estilo-desc">Verdades incômodas</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="motivacional">
+                                    <span class="estilo-emoji">🚀</span>
+                                    <span class="estilo-nome">Motivacional</span>
+                                    <span class="estilo-desc">Inspiração e ação</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="estilo" value="" required>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="btnGerar">
+                            <span class="btn-text">Gerar Roteiro</span>
+                            <span class="btn-loader" style="display: none;">Gerando...</span>
+                        </button>
+                    </form>
+
+                    <div class="info-box">
+                        <p class="info-title">💡 Dica</p>
+                        <p class="info-text">Cada geração cria um roteiro único! Clique várias vezes para explorar diferentes abordagens para o mesmo tema.</p>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Resultado -->
+                <div class="panel result-panel">
+                    <div id="resultadoVazio" class="resultado-vazio">
+                        <div class="empty-state">
+                            <span class="empty-emoji">🎬</span>
+                            <p>Seu roteiro aparecerá aqui</p>
+                            <p class="empty-desc">Preencha o formulário e clique em "Gerar Roteiro"</p>
+                        </div>
+                    </div>
+
+                    <div id="resultadoConteudo" class="resultado-conteudo" style="display: none;">
+                        <div class="resultado-header">
+                            <div class="resultado-meta">
+                                <span class="meta-item">
+                                    <span class="meta-label">Tema:</span>
+                                    <span id="metaTema" class="meta-value"></span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">Estilo:</span>
+                                    <span id="metaEstilo" class="meta-badge"></span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">Duração:</span>
+                                    <span id="metaDuracao" class="meta-value"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="secao-script">
+                            <h3 class="secao-titulo">📝 Script Completo</h3>
+                            <div id="scriptCompleto" class="script-box"></div>
+                            <button type="button" class="btn-copy" id="btnCopyScript">
+                                <span id="copyText">📋 Copiar Script</span>
+                            </button>
+                        </div>
+
+                        <div class="secoes-breakdown">
+                            <h3 class="secao-titulo">🎯 Script por Seções</h3>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🎣 Gancho (0-2s)</h4>
+                                <p id="secaoGancho" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="gancho">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">📖 Contexto (2-8s)</h4>
+                                <p id="secaoContexto" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="contexto">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🌀 Desenvolvimento (8-20s)</h4>
+                                <p id="secaoDesenvolvimento" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="desenvolvimento">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🔥 Clímax (20-25s)</h4>
+                                <p id="secaoClimax" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="climax">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">💎 Revelação (25-30s)</h4>
+                                <p id="secaoRevelacao" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="revelacao">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">👍 CTA - Chamada à Ação (30-60s)</h4>
+                                <p id="secaoCta" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="cta">Copiar</button>
+                            </div>
+                        </div>
+
+                        <div class="resultado-actions">
+                            <button type="button" class="btn-secondary" id="btnNovoRoteiro">Gerar Novo Roteiro</button>
+                            <button type="button" class="btn-secondary" id="btnDownloadTxt">📥 Download TXT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 RoteirAI - Crie roteiros virais em segundos</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Para TikTok, Reels, YouTube Shorts</p>
+        </footer>
+    </div>
+
+    <script>
+        // Motor de Geração de Roteiros
+        const rotas = {
+            curiosidade: {
+                gancho: [
+                    'Descobri algo que você NÃO sabia sobre {{tema}}...',
+                    'Ninguém fala sobre isso, mas {{tema}} pode mudar sua vida',
+                    'Esse segredo sobre {{tema}} está liberado agora',
+                    'Isso que vou mostrar de {{tema}} é INSANO',
+                    'A maioria das pessoas erra completamente em {{tema}}'
+                ],
+                contexto: [
+                    'Há pouco tempo aprendi algo surpreendente:',
+                    'Deixa eu te contar o que descobri:',
+                    'Então, aqui está a verdade:',
+                    'Quando soube disso, meu mundo mudou:',
+                    'A realidade é que:'
+                ],
+                desenvolvimento: [
+                    'Estudos mostram que {{tema}} funciona diferente do que todos pensam',
+                    'A maioria acredita que {{tema}} é assim, mas na verdade é assado',
+                    'O problema é que {{tema}} tem um lado que ngm conhece',
+                    'Existem 3 coisas sobre {{tema}} que vão te surpreender',
+                    'A verdade sobre {{tema}} é muito mais complexa'
+                ],
+                climax: [
+                    'E aqui vem o melhor...',
+                    'Mas espera, tem mais!',
+                    'Agora vem a parte que ninguém esperava...',
+                    'Esse é o detalhe que muda TUDO...',
+                    'E essa é a revelação que todos queriam:'
+                ],
+                revelacao: [
+                    'A chave do {{tema}} que todos querem saber é...',
+                    'O hack secreto de {{tema}} é simplesmente...',
+                    'Isso muda completamente como você vê {{tema}}...',
+                    'Essa informação sobre {{tema}} vale ouro...',
+                    'Esse é o passo que faz {{tema}} funcionar de verdade...'
+                ],
+                cta: [
+                    'Se você quer dominar {{tema}}, começa agora',
+                    'Compartilha esse conhecimento que alguém que você ama pode aproveitar {{tema}}',
+                    'Me conta nos comentários: já conhecia esse lado de {{tema}}?',
+                    'Salva esse vídeo para não esquecer esse hack de {{tema}}',
+                    'Qual é sua experiência com {{tema}}? Comenta aí!'
+                ]
+            },
+            storytelling: {
+                gancho: [
+                    'Deixa eu contar uma história sobre {{tema}} que vai mudar como você pensa',
+                    'Essa história de {{tema}} é 100% real e CHOCANTE',
+                    'Tem um dia que aconteceu comigo e {{tema}} envolvido...',
+                    'A história que vou contar sobre {{tema}} é incrível',
+                    'Você não vai acreditar no que aconteceu com {{tema}}'
+                ],
+                contexto: [
+                    'Tudo começou quando eu não sabia nada sobre {{tema}}',
+                    'Naquela época, eu era completamente ignorante em {{tema}}',
+                    'Tem alguns meses, eu batalhava bastante com {{tema}}',
+                    'Era um dia comum, até que {{tema}} entrou na minha vida',
+                    'A história começa assim:'
+                ],
+                desenvolvimento: [
+                    'Aí começou a ficar interessante... {{tema}} me mostrou algo novo',
+                    'No meio do processo com {{tema}}, eu percebi algo muito importante',
+                    'A jornada com {{tema}} foi transformadora',
+                    'Enquanto eu tentava lidar com {{tema}}, descubri um padrão',
+                    'Cada passo com {{tema}} me aproximava da verdade'
+                ],
+                climax: [
+                    'E foi aí que tudo mudou com {{tema}}...',
+                    'Esse foi o ponto de virada da minha relação com {{tema}}',
+                    'Naquele momento crítico com {{tema}}, eu aprendi...',
+                    'Tudo culminou em um momento que jamais vou esquecer sobre {{tema}}',
+                    'E então aconteceu algo que eu nunca esperava com {{tema}}'
+                ],
+                revelacao: [
+                    'A lição sobre {{tema}} que tirei disso foi profunda',
+                    'Depois de tudo isso, percebí que {{tema}} era na verdade...',
+                    'O insight sobre {{tema}} que eu ganhei transformou meu entendimento',
+                    'Agora eu vejo {{tema}} de uma forma completamente diferente',
+                    'A verdade sobre {{tema}} que descobri foi:'
+                ],
+                cta: [
+                    'Qual é sua história com {{tema}}? Comenta aí qual foi sua experiência!',
+                    'Você já passou por algo parecido com {{tema}}? Quer compartilhar?',
+                    'Se você também tem uma história sobre {{tema}}, me conta!',
+                    'Faz aí nos comentários: qual foi sua descoberta com {{tema}}?',
+                    'Marca alguém que precisa ouvir essa história sobre {{tema}}'
+                ]
+            },
+            polemico: {
+                gancho: [
+                    'Vou falar algo que todos têm medo de falar sobre {{tema}}',
+                    'Ninguém tem coragem de dizer, mas a verdade sobre {{tema}} é essa',
+                    'Isso vai gerar polêmica, mas preciso falar: {{tema}} é...',
+                    'A narrativa sobre {{tema}} está completamente errada',
+                    'Prepare-se: o que vou contar sobre {{tema}} vai incomodar algumas pessoas'
+                ],
+                contexto: [
+                    'Todos falam sobre {{tema}} desse jeito, mas é mentira',
+                    'A versão oficial de {{tema}} que vendem por aí é falsa',
+                    'Existe uma grande mentira sobre {{tema}} que precisa ser exposta',
+                    'A maioria acredita na narrativa sobre {{tema}}, mas...',
+                    'Aqui está a verdade que ninguém quer reconhecer sobre {{tema}}:'
+                ],
+                desenvolvimento: [
+                    'Os fatos sobre {{tema}} mostram uma realidade bem diferente',
+                    'Se você pesquisar além das manchetes, {{tema}} revela um padrão preocupante',
+                    'Os números sobre {{tema}} não mentem, diferente do que dizem',
+                    'Quando você juntar os pontos sobre {{tema}}, fica óbvio',
+                    'A evidência sobre {{tema}} aponta para uma conclusão chocante'
+                ],
+                climax: [
+                    'E aqui está o ponto que ninguém quer discutir sobre {{tema}}...',
+                    'Mas isso que vou dizer sobre {{tema}} vai encher a timeline de discussão...',
+                    'E é por isso que a verdade sobre {{tema}} é tão polêmica...',
+                    'Isso explica por que as pessoas têm medo de falar sobre {{tema}}...',
+                    'Essa é a razão real por trás de {{tema}} que todos ignoram...'
+                ],
+                revelacao: [
+                    'A verdade incômoda sobre {{tema}} é que...',
+                    'Se todos fossem honestos sobre {{tema}}, diriam que...',
+                    'O segredo escondido sobre {{tema}} é simplesmente...',
+                    'Ninguém admite, mas sobre {{tema}} a realidade é...',
+                    'A verdade nua e crua sobre {{tema}} é que...'
+                ],
+                cta: [
+                    'Vocês concordam ou discordam? Bora debater {{tema}} nos comentários!',
+                    'Qual é seu ponto de vista sobre {{tema}}? Sou todo ouvidos',
+                    'Isso vai gerar discussão: qual é sua opinião sincera sobre {{tema}}?',
+                    'Se você acha que estou certo ou errado sobre {{tema}}, comenta aí!',
+                    'Marca alguém que precisa ouvir essa verdade sobre {{tema}}'
+                ]
+            },
+            motivacional: {
+                gancho: [
+                    'Se você sente que está preso em {{tema}}, presta atenção nesse vídeo',
+                    'Toda vez que penso em desistir de {{tema}}, lembro dessa verdade',
+                    'Se você está lutando com {{tema}}, essa mensagem é pra você',
+                    'Você que quer conquistar {{tema}}, isso é o que você precisa ouvir',
+                    'Quando você estiver cansado de tentar {{tema}}, veja isso'
+                ],
+                contexto: [
+                    'Eu também pensava que era impossível em {{tema}}',
+                    'Houve um tempo que eu duvidava completamente da minha capacidade em {{tema}}',
+                    'Sou a prova viva de que {{tema}} é possível',
+                    'A jornada com {{tema}} é desafiadora, mas vale cada segundo',
+                    'Comecei como você, duvidando de {{tema}}'
+                ],
+                desenvolvimento: [
+                    'O segredo que ninguém te fala sobre {{tema}} é que começa pequeno',
+                    'Cada progresso em {{tema}}, mesmo minúsculo, conta',
+                    'A transformação em {{tema}} não acontece da noite pro dia',
+                    'Mas consistência em {{tema}} muda completamente o jogo',
+                    'Essa é a verdade que precisei aprender em {{tema}}'
+                ],
+                climax: [
+                    'E então, depois de tudo isso com {{tema}}, percebi...',
+                    'O ponto de virada na minha jornada com {{tema}} foi quando...',
+                    'Isso foi o momento em que tudo virou em relação a {{tema}}...',
+                    'Quando comecei a ver {{tema}} dessa forma, mudou tudo...',
+                    'E foi aí que {{tema}} finalmente começou a fazer sentido...'
+                ],
+                revelacao: [
+                    'Se você quer conquistar {{tema}}, a verdade é simples',
+                    'O segredo que descobri sobre {{tema}} é que a capacidade já está em você',
+                    'A libertação em {{tema}} começa quando você acredita em si mesmo',
+                    'Ninguém pode dominar {{tema}} pelos seus resultados, apenas você',
+                    'A transformação em {{tema}} começa com uma pequena decisão'
+                ],
+                cta: [
+                    'Sua jornada com {{tema}} começa AGORA. Qual é o primeiro passo que vai dar?',
+                    'Se esse vídeo te tocou, comenta aqui qual é seu maior desafio com {{tema}}',
+                    'Você consegue conquistar {{tema}}! Acredita em si mesmo e sai do sofa',
+                    'Qual é seu maior sonho com {{tema}}? Comenta e vamos vibrar junto!',
+                    'Se você acredita que é possível conquistar {{tema}}, marca um amigo que precisa disso'
+                ]
+            }
+        };
+
+        // Estado
+        const state = {
+            roteiro: null,
+            carregando: false
+        };
+
+        // Elementos DOM
+        const elements = {
+            formulario: document.getElementById('formularioRoteiro'),
+            temaInput: document.getElementById('tema'),
+            estiloInput: document.getElementById('estilo'),
+            botaoGerar: document.getElementById('btnGerar'),
+            estiloBotoes: document.querySelectorAll('.estilo-btn'),
+
+            resultadoVazio: document.getElementById('resultadoVazio'),
+            resultadoConteudo: document.getElementById('resultadoConteudo'),
+
+            metaTema: document.getElementById('metaTema'),
+            metaEstilo: document.getElementById('metaEstilo'),
+            metaDuracao: document.getElementById('metaDuracao'),
+
+            scriptCompleto: document.getElementById('scriptCompleto'),
+            btnCopyScript: document.getElementById('btnCopyScript'),
+
+            secaoGancho: document.getElementById('secaoGancho'),
+            secaoContexto: document.getElementById('secaoContexto'),
+            secaoDesenvolvimento: document.getElementById('secaoDesenvolvimento'),
+            secaoClimax: document.getElementById('secaoClimax'),
+            secaoRevelacao: document.getElementById('secaoRevelacao'),
+            secaoCta: document.getElementById('secaoCta'),
+
+            botoescopiarSecao: document.querySelectorAll('.btn-copy-small'),
+
+            btnNovoRoteiro: document.getElementById('btnNovoRoteiro'),
+            btnDownloadTxt: document.getElementById('btnDownloadTxt')
+        };
+
+        // Funções auxiliares
+        function aleatorio(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function substituir(texto, tema) {
+            return texto.replace(/{{tema}}/g, tema);
+        }
+
+        function capitalizar(texto) {
+            return texto.charAt(0).toUpperCase() + texto.slice(1);
+        }
+
+        function gerarRoteiro(tema, estilo) {
+            const rotaEscolhida = rotas[estilo];
+
+            if (!rotaEscolhida) {
+                return { erro: 'Estilo não encontrado' };
+            }
+
+            const roteiro = {
+                tema: tema,
+                estilo: estilo,
+                timestamp: new Date().toISOString(),
+                secoes: {
+                    gancho: substituir(aleatorio(rotaEscolhida.gancho), tema),
+                    contexto: substituir(aleatorio(rotaEscolhida.contexto), tema),
+                    desenvolvimento: substituir(aleatorio(rotaEscolhida.desenvolvimento), tema),
+                    climax: substituir(aleatorio(rotaEscolhida.climax), tema),
+                    revelacao: substituir(aleatorio(rotaEscolhida.revelacao), tema),
+                    cta: substituir(aleatorio(rotaEscolhida.cta), tema)
+                },
+                scriptCompleto: ''
+            };
+
+            const script = [
+                roteiro.secoes.gancho,
+                roteiro.secoes.contexto,
+                roteiro.secoes.desenvolvimento,
+                roteiro.secoes.climax,
+                roteiro.secoes.revelacao,
+                roteiro.secoes.cta
+            ].join('\n\n');
+
+            roteiro.scriptCompleto = script;
+
+            const palavras = script.split(' ').length;
+            const velocidadeFala = 120;
+            const minutos = (palavras / velocidadeFala).toFixed(2);
+            roteiro.duracao = `${minutos} minutos`;
+
+            return roteiro;
+        }
+
+        // Event Listeners
+        function inicializar() {
+            elements.estiloBotoes.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const estilo = btn.dataset.estilo;
+                    elements.estiloBotoes.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    elements.estiloInput.value = estilo;
+                });
+            });
+
+            elements.formulario.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const tema = elements.temaInput.value.trim();
+                const estilo = elements.estiloInput.value.trim();
+
+                if (!tema) {
+                    mostrarErro('Por favor, digite um tema');
+                    return;
+                }
+
+                if (!estilo) {
+                    mostrarErro('Por favor, escolha um estilo');
+                    return;
+                }
+
+                const roteiro = gerarRoteiro(tema, estilo);
+
+                if (roteiro.erro) {
+                    mostrarErro(roteiro.erro);
+                    return;
+                }
+
+                state.roteiro = roteiro;
+                exibirRoteiro(roteiro);
+                mostrarSucesso('Roteiro gerado com sucesso!');
+            });
+
+            elements.btnCopyScript.addEventListener('click', () => {
+                copiarTexto(elements.scriptCompleto.textContent, 'Script copiado!');
+            });
+
+            elements.botoescopiarSecao.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const secao = btn.dataset.secao;
+                    const elemento = elements[`secao${secao.charAt(0).toUpperCase() + secao.slice(1)}`];
+                    copiarTexto(elemento.textContent, 'Seção copiada!');
+                });
+            });
+
+            elements.btnNovoRoteiro.addEventListener('click', () => {
+                elements.temaInput.value = '';
+                elements.estiloInput.value = '';
+                elements.estiloBotoes.forEach(btn => btn.classList.remove('active'));
+                elements.resultadoVazio.style.display = 'flex';
+                elements.resultadoConteudo.style.display = 'none';
+                elements.temaInput.focus();
+            });
+
+            elements.btnDownloadTxt.addEventListener('click', () => {
+                if (!state.roteiro) return;
+
+                const conteudo = `ROTEIRO VIRAL - ${state.roteiro.tema.toUpperCase()}
+Estilo: ${capitalizar(state.roteiro.estilo)}
+Duração: ${state.roteiro.duracao}
+
+═════════════════════════════════════════════════════════
+
+${state.roteiro.scriptCompleto}
+
+═════════════════════════════════════════════════════════`;
+
+                const blob = new Blob([conteudo], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `roteiro-${state.roteiro.tema.replace(/\s+/g, '-').toLowerCase()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                mostrarSucesso('Roteiro baixado!');
+            });
+        }
+
+        function exibirRoteiro(roteiro) {
+            elements.metaTema.textContent = roteiro.tema;
+            elements.metaEstilo.textContent = capitalizar(roteiro.estilo);
+            elements.metaDuracao.textContent = roteiro.duracao;
+
+            elements.scriptCompleto.textContent = roteiro.scriptCompleto;
+
+            elements.secaoGancho.textContent = roteiro.secoes.gancho;
+            elements.secaoContexto.textContent = roteiro.secoes.contexto;
+            elements.secaoDesenvolvimento.textContent = roteiro.secoes.desenvolvimento;
+            elements.secaoClimax.textContent = roteiro.secoes.climax;
+            elements.secaoRevelacao.textContent = roteiro.secoes.revelacao;
+            elements.secaoCta.textContent = roteiro.secoes.cta;
+
+            elements.resultadoVazio.style.display = 'none';
+            elements.resultadoConteudo.style.display = 'flex';
+        }
+
+        async function copiarTexto(texto, mensagem = 'Copiado!') {
+            try {
+                await navigator.clipboard.writeText(texto);
+                mostrarSucesso(mensagem);
+            } catch (erro) {
+                mostrarErro('Erro ao copiar para a área de transferência');
+            }
+        }
+
+        function mostrarErro(mensagem) {
+            mostrarNotificacao(mensagem, 'erro');
+        }
+
+        function mostrarSucesso(mensagem) {
+            mostrarNotificacao(mensagem, 'sucesso');
+        }
+
+        function mostrarNotificacao(mensagem, tipo = 'info') {
+            const notificacaoAnterior = document.querySelector('.notificacao');
+            if (notificacaoAnterior) {
+                notificacaoAnterior.remove();
+            }
+
+            const notificacao = document.createElement('div');
+            notificacao.className = `notificacao notificacao-${tipo}`;
+            notificacao.textContent = mensagem;
+
+            document.body.appendChild(notificacao);
+
+            setTimeout(() => {
+                notificacao.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notificacao.remove(), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+</body>
+</html>

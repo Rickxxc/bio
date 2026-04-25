@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoteirAI - Gerador de Scripts Virais para TikTok & Reels</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-main">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">✨</span>
+                    <span class="logo-text">RoteirAI</span>
+                </div>
+                <p class="tagline">Roteiros Virais em Segundos</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Left Panel - Formulário -->
+                <div class="panel form-panel">
+                    <h1 class="title">Crie seu Roteiro Viral</h1>
+                    <p class="subtitle">Preencha os campos abaixo e deixe a IA gerar um script pronto para TikTok e Reels</p>
+
+                    <form id="formularioRoteiro" class="form">
+                        <!-- Campo Tema -->
+                        <div class="form-group">
+                            <label for="tema" class="label">Qual é o tema do seu vídeo?</label>
+                            <input
+                                type="text"
+                                id="tema"
+                                placeholder="Ex: inteligência artificial, finanças pessoais, beleza..."
+                                class="input"
+                                maxlength="100"
+                                required
+                            >
+                            <span class="form-hint">Seja específico para resultados melhores</span>
+                        </div>
+
+                        <!-- Campo Estilo -->
+                        <div class="form-group">
+                            <label for="estilo" class="label">Escolha o estilo do roteiro</label>
+                            <div class="estilo-grid">
+                                <button type="button" class="estilo-btn" data-estilo="curiosidade" title="Desperta curiosidade e surpresa">
+                                    <span class="estilo-emoji">🔍</span>
+                                    <span class="estilo-nome">Curiosidade</span>
+                                    <span class="estilo-desc">Revelações e descobertas</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="storytelling" title="Conta uma história envolvente">
+                                    <span class="estilo-emoji">📖</span>
+                                    <span class="estilo-nome">Storytelling</span>
+                                    <span class="estilo-desc">Histórias que emocionam</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="polemico" title="Conteúdo que gera debate">
+                                    <span class="estilo-emoji">⚡</span>
+                                    <span class="estilo-nome">Polêmico</span>
+                                    <span class="estilo-desc">Verdades incômodas</span>
+                                </button>
+
+                                <button type="button" class="estilo-btn" data-estilo="motivacional" title="Inspira e motiva">
+                                    <span class="estilo-emoji">🚀</span>
+                                    <span class="estilo-nome">Motivacional</span>
+                                    <span class="estilo-desc">Inspiração e ação</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="estilo" value="" required>
+                        </div>
+
+                        <!-- Botão Gerar -->
+                        <button type="submit" class="btn-primary" id="btnGerar">
+                            <span class="btn-text">Gerar Roteiro</span>
+                            <span class="btn-loader" style="display: none;">Gerando...</span>
+                        </button>
+                    </form>
+
+                    <!-- Info -->
+                    <div class="info-box">
+                        <p class="info-title">💡 Dica</p>
+                        <p class="info-text">Cada geração cria um roteiro único! Clique várias vezes para explorar diferentes abordagens para o mesmo tema.</p>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Resultado -->
+                <div class="panel result-panel">
+                    <div id="resultadoVazio" class="resultado-vazio">
+                        <div class="empty-state">
+                            <span class="empty-emoji">🎬</span>
+                            <p>Seu roteiro aparecerá aqui</p>
+                            <p class="empty-desc">Preencha o formulário e clique em "Gerar Roteiro"</p>
+                        </div>
+                    </div>
+
+                    <div id="resultadoConteudo" class="resultado-conteudo" style="display: none;">
+                        <div class="resultado-header">
+                            <div class="resultado-meta">
+                                <span class="meta-item">
+                                    <span class="meta-label">Tema:</span>
+                                    <span id="metaTema" class="meta-value"></span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">Estilo:</span>
+                                    <span id="metaEstilo" class="meta-badge"></span>
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-label">Duração:</span>
+                                    <span id="metaDuracao" class="meta-value"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Script completo -->
+                        <div class="secao-script">
+                            <h3 class="secao-titulo">📝 Script Completo</h3>
+                            <div id="scriptCompleto" class="script-box">
+                            </div>
+                            <button type="button" class="btn-copy" id="btnCopyScript">
+                                <span id="copyText">📋 Copiar Script</span>
+                            </button>
+                        </div>
+
+                        <!-- Seções quebradas -->
+                        <div class="secoes-breakdown">
+                            <h3 class="secao-titulo">🎯 Script por Seções</h3>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🎣 Gancho (0-2s)</h4>
+                                <p id="secaoGancho" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="gancho">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">📖 Contexto (2-8s)</h4>
+                                <p id="secaoContexto" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="contexto">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🌀 Desenvolvimento (8-20s)</h4>
+                                <p id="secaoDesenvolvimento" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="desenvolvimento">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">🔥 Clímax (20-25s)</h4>
+                                <p id="secaoClimax" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="climax">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">💎 Revelação (25-30s)</h4>
+                                <p id="secaoRevelacao" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="revelacao">Copiar</button>
+                            </div>
+
+                            <div class="secao-item">
+                                <h4 class="secao-item-titulo">👍 CTA - Chamada à Ação (30-60s)</h4>
+                                <p id="secaoCta" class="secao-item-texto"></p>
+                                <button type="button" class="btn-copy-small" data-secao="cta">Copiar</button>
+                            </div>
+                        </div>
+
+                        <!-- Ações -->
+                        <div class="resultado-actions">
+                            <button type="button" class="btn-secondary" id="btnNovoRoteiro">Gerar Novo Roteiro</button>
+                            <button type="button" class="btn-secondary" id="btnDownloadTxt">📥 Download TXT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 RoteirAI - Crie roteiros virais em segundos</p>
+            <p class="footer-subtext">Powered by IA | Para TikTok, Reels, YouTube Shorts</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
